@@ -1,0 +1,84 @@
+[gd_scene load_steps=12 format=3 uid="uid://bjwfoah4n4s8n"]
+
+[ext_resource type="Script" path="res://Player.cs" id="1_3qb0s"]
+[ext_resource type="Texture2D" uid="uid://d0pk1cxsh3cyo" path="res://characters_packed.png" id="1_k7yeh"]
+[ext_resource type="Script" path="res://Stats.cs" id="2_5ugaj"]
+[ext_resource type="AudioStream" uid="uid://b1aj584fvkj6o" path="res://Sound/Jump.wav" id="4_harfa"]
+
+[sub_resource type="Resource" id="Resource_hd382"]
+script = ExtResource("2_5ugaj")
+Speed = 80.0
+JumpVelocity = -250.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s70vy"]
+atlas = ExtResource("1_k7yeh")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m17do"]
+atlas = ExtResource("1_k7yeh")
+region = Rect2(72, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_alkhy"]
+atlas = ExtResource("1_k7yeh")
+region = Rect2(72, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rug18"]
+atlas = ExtResource("1_k7yeh")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_n0ba0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s70vy")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m17do")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_alkhy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rug18")
+}],
+"loop": true,
+"name": &"run",
+"speed": 7.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kx7lh"]
+size = Vector2(12, 19)
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 3
+script = ExtResource("1_3qb0s")
+Stat = SubResource("Resource_hd382")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_n0ba0")
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2.5)
+shape = SubResource("RectangleShape2D_kx7lh")
+
+[node name="LadderCheck" type="RayCast2D" parent="."]
+position = Vector2(0, -6)
+target_position = Vector2(0, 18)
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_harfa")
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
